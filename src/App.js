@@ -14,7 +14,7 @@ export default class App extends Component {
   };
 
   componentDidMount() {
-    setTimeout(() => this.checkUserLogged(), 1000);
+    setTimeout(() => this.checkUserLogged(), 0);
   }
 
   checkUserLogged = () =>
