@@ -8,7 +8,7 @@ export default class Header extends Component {
     return (
       <View style={styles.header}>
         <View>
-          <Icon name="envelope" size={25} color="#4cb3b2" />
+          <Icon name="inbox" size={25} color="#4cb3b2" />
         </View>
         <View>
           <Text style={styles.title}>MailTrap</Text>

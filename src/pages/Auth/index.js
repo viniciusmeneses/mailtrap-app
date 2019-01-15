@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import client from '../../services/client';
-import { prop } from 'ramda';
 
 export default class Auth extends Component {
   state = {
