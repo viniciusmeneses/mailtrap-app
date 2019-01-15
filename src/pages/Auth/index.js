@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   AsyncStorage,
+  Linking,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import client from '../../services/client';
@@ -33,12 +34,16 @@ export default class Auth extends Component {
 
   handleTokenInput = text => this.setState({ tokenInput: text, error: null });
 
+  goToMailTrap = () => Linking.openURL('https://mailtrap.io');
+
   render() {
     const { tokenInput, error } = this.state;
 
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>MailTrap</Text>
+        <TouchableOpacity onPress={this.goToMailTrap}>
+          <Text style={styles.title}>MailTrap</Text>
+        </TouchableOpacity>
         <Text style={styles.instructions}>
           Enter your API Token above to login in your MailTrap account:
         </Text>
