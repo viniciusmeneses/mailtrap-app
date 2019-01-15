@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import createRouter from './routes';
 import {
   View,
@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
+import { MenuProvider } from 'react-native-popup-menu';
 
 export default class App extends Component {
   state = {
@@ -27,10 +28,10 @@ export default class App extends Component {
     if (logged !== null) {
       const Routes = createRouter(logged);
       return (
-        <Fragment>
+        <MenuProvider>
           <StatusBar barStyle="light-content" />
           <Routes />
-        </Fragment>
+        </MenuProvider>
       );
     }
     return (
