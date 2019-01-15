@@ -7,9 +7,10 @@ import client from '../../services/client';
 export default class Inbox extends Component {
   state = {
     user: {},
-    inbox: {},
+    inboxes: [],
     messages: [],
-    refreshing: false,
+    currentInbox: '',
+    refreshing: true,
   };
 
   componentDidMount() {
@@ -19,40 +20,49 @@ export default class Inbox extends Component {
   loadAll = () =>
     this.loadUser()
       .then(user => this.fetchInboxes(user))
-      .then(({ user, inbox }) => this.fetchMessages(user, inbox))
-      .then(data => this.setState(data));
+      .then(({ user, inboxes }) => {
+        return this.fetchMessages(user, inboxes[0].id).then(data => ({
+          ...data,
+          inboxes,
+        }));
+      })
+      .then(data => this.setState({ ...data, refreshing: false }));
 
   loadUser = () =>
     AsyncStorage.getItem('@MailTrap:user').then(user => JSON.parse(user));
 
   fetchInboxes = user =>
-    client
-      .getInboxes(user.api_token)
-      .then(inboxes => ({ user, inbox: inboxes[0] }));
+    client.getInboxes(user.api_token).then(inboxes => ({ user, inboxes }));
 
   fetchMessages = (user, inbox) =>
     client
-      .getMessages(user.api_token, inbox.id)
-      .then(messages => ({ user, inbox, messages }));
+      .getMessages(user.api_token, inbox)
+      .then(messages => ({ user, messages, currentInbox: inbox }));
 
   extractKeyFromMessage = item => String(item.id);
 
   renderMessage = ({ item }) => <Message {...item} />;
 
-  refreshMessages = () => {
-    const { user, inbox } = this.state;
+  refreshMessages = (currentInbox = this.state.currentInbox) => {
+    const { user } = this.state;
     this.setState({ refreshing: true });
-    this.fetchMessages(user, inbox).then(({ messages }) =>
+    this.fetchMessages(user, currentInbox).then(({ messages }) =>
       this.setState({ messages, refreshing: false })
     );
   };
 
+  handleInboxChange = inbox => this.refreshMessages(inbox);
+
   render() {
-    const { messages, refreshing } = this.state;
-    console.log(this.state);
+    const { messages, refreshing, inboxes, currentInbox } = this.state;
+
     return (
       <View style={styles.wrapper}>
-        <Header />
+        <Header
+          inboxes={inboxes}
+          selected={currentInbox}
+          onInboxChange={this.handleInboxChange}
+        />
         <View style={styles.container}>
           <FlatList
             data={messages}

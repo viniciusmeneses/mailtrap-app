@@ -9,6 +9,12 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { withNavigation } from 'react-navigation';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 
 class Header extends Component {
   signOut = () => {
@@ -18,24 +24,62 @@ class Header extends Component {
     );
   };
 
+  renderInboxes = () => {
+    const { inboxes, selected } = this.props;
+    return inboxes.map(inbox => (
+      <MenuOption
+        key={inbox.id}
+        text={inbox.name}
+        value={inbox.id}
+        customStyles={{
+          optionText:
+            selected === inbox.id ? styles.inboxTextSelected : styles.inboxText,
+        }}
+        disabled={selected === inbox.id}
+      />
+    ));
+  };
+
+  handleInboxSelect = inbox => {
+    const { onInboxChange } = this.props;
+    onInboxChange(inbox);
+  };
+
   render() {
     return (
       <View style={styles.header}>
-        <View>
-          <Icon name="inbox" size={25} color="#4cb3b2" />
-        </View>
-        <View>
-          <Text style={styles.title}>MailTrap</Text>
-        </View>
-        <View>
-          <TouchableOpacity onPress={this.signOut}>
-            <Icon name="times-circle" size={25} color="#4cb3b2" />
-          </TouchableOpacity>
-        </View>
+        <Menu onSelect={this.handleInboxSelect}>
+          <MenuTrigger
+            customStyles={{ TriggerTouchableComponent: TouchableOpacity }}
+          >
+            <Icon name="inbox" size={25} color="#4cb3b2" />
+          </MenuTrigger>
+          <MenuOptions
+            customStyles={{
+              optionsContainer: {
+                width: 90,
+                borderColor: '#303945',
+                borderWidth: 1,
+                borderRadius: 4,
+              },
+            }}
+          >
+            {this.renderInboxes()}
+          </MenuOptions>
+        </Menu>
+        <Text style={styles.title}>MailTrap</Text>
+        <TouchableOpacity onPress={this.signOut}>
+          <Icon name="times-circle" size={25} color="#4cb3b2" />
+        </TouchableOpacity>
       </View>
     );
   }
 }
+
+const inboxStyle = {
+  fontSize: 15,
+  fontWeight: 'bold',
+};
 
 const styles = StyleSheet.create({
   header: {
@@ -51,6 +95,14 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     color: 'white',
+  },
+  inboxText: {
+    ...inboxStyle,
+    color: '#303945',
+  },
+  inboxTextSelected: {
+    ...inboxStyle,
+    color: '#303945aa',
   },
 });
 
