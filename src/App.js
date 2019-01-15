@@ -18,9 +18,9 @@ export default class App extends Component {
   }
 
   checkUserLogged = () =>
-    AsyncStorage.getItem('@MailTrap:user')
-      .then(() => this.setState({ logged: true }))
-      .catch(() => this.setState({ logged: false }));
+    AsyncStorage.getItem('@MailTrap:user').then(user =>
+      user ? this.setState({ logged: true }) : this.setState({ logged: false })
+    );
 
   render() {
     const { logged } = this.state;
