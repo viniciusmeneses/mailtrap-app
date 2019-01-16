@@ -1,11 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { ScrollView, Text, StyleSheet, View } from 'react-native';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
+import HTML from 'react-native-render-html';
 
 const MessageContent = ({ content }) => (
-  <View style={styles.container}>
-    <Text>{content}</Text>
-  </View>
+  <ScrollView style={styles.container} onPress={() => {}}>
+    <View style={styles.wrapper}>
+      {/<html>/gi.test(content) ? (
+        <HTML html={content} baseFontStyle={styles.text} />
+      ) : (
+        <Text style={styles.text}>{content}</Text>
+      )}
+    </View>
+  </ScrollView>
 );
 
 const styles = StyleSheet.create({
@@ -22,6 +29,14 @@ const styles = StyleSheet.create({
       borderBottomRightRadius: 25,
       marginBottom: 20,
     }),
+  },
+  text: {
+    fontSize: 15,
+    color: '#333',
+    lineHeight: 20,
+  },
+  wrapper: {
+    marginBottom: 30,
   },
 });
 
