@@ -5,7 +5,7 @@ import { withNavigation } from 'react-navigation';
 
 const detailsIcon = name => <Icon name={name} color="#4cb3b2" size={15} />;
 
-class MessageInbox extends Component {
+class MessageDetails extends Component {
   openMessage = () => {
     const {
       navigation,
@@ -25,11 +25,14 @@ class MessageInbox extends Component {
   };
 
   render() {
-    const { subject, sent_at, to_email, from_email } = this.props;
+    const { subject, sent_at, to_email, from_email, fullSubject } = this.props;
     return (
       <TouchableOpacity style={styles.container} onPress={this.openMessage}>
         <View style={styles.subjectWrapper}>
-          <Text style={styles.subject} numberOfLines={1}>
+          <Text
+            style={fullSubject ? styles.fullSubject : styles.subject}
+            numberOfLines={fullSubject ? 0 : 1}
+          >
             {subject}
           </Text>
         </View>
@@ -52,6 +55,11 @@ class MessageInbox extends Component {
   }
 }
 
+const subjectStyle = {
+  fontWeight: 'bold',
+  color: '#333',
+};
+
 const styles = StyleSheet.create({
   container: {
     borderRadius: 5,
@@ -62,9 +70,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   subject: {
+    ...subjectStyle,
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+  },
+  fullSubject: {
+    ...subjectStyle,
+    fontSize: 16,
   },
   subjectWrapper: {
     marginBottom: 5,
@@ -84,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(MessageInbox);
+export default withNavigation(MessageDetails);
