@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import Header from '../../components/Header';
 import MessageDetails from '../../components/MessageDetails';
+import MessageContent from '../../components/MessageContent';
 
 export default class Message extends Component {
   render() {
@@ -18,7 +19,7 @@ export default class Message extends Component {
       <View style={styles.wrapper}>
         <Header mode="message" />
         <MessageDetails {...message} fullSubject />
-        <View style={styles.container} />
+        <MessageContent content={message.content} />
       </View>
     );
   }
@@ -28,14 +29,5 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#fafafa',
-  },
-  container: {
-    backgroundColor: 'white',
-    borderRadius: 5,
-    borderColor: '#dfdfdf',
-    borderWidth: 1,
-    margin: 10,
-    padding: 15,
-    flex: 1,
   },
 });

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { withNavigation } from 'react-navigation';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 const detailsIcon = name => <Icon name={name} color="#4cb3b2" size={15} />;
 
@@ -25,9 +26,21 @@ class MessageDetails extends Component {
   };
 
   render() {
-    const { subject, sent_at, to_email, from_email, fullSubject } = this.props;
+    const {
+      subject,
+      sent_at,
+      to_email,
+      from_email,
+      fullSubject,
+      roundBorderBottom,
+    } = this.props;
     return (
-      <TouchableOpacity style={styles.container} onPress={this.openMessage}>
+      <TouchableOpacity
+        style={
+          roundBorderBottom ? styles.containerBottomRound : styles.container
+        }
+        onPress={this.openMessage}
+      >
         <View style={styles.subjectWrapper}>
           <Text
             style={fullSubject ? styles.fullSubject : styles.subject}
@@ -60,14 +73,26 @@ const subjectStyle = {
   color: '#333',
 };
 
+const containerStyle = {
+  borderRadius: 5,
+  borderColor: '#dfdfdf',
+  borderWidth: 1,
+  margin: 10,
+  padding: 15,
+  backgroundColor: 'white',
+};
+
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 5,
-    borderColor: '#dfdfdf',
-    borderWidth: 1,
-    margin: 10,
-    padding: 15,
-    backgroundColor: 'white',
+    ...containerStyle,
+  },
+  containerBottomRound: {
+    ...containerStyle,
+    ...ifIphoneX({
+      borderBottomLeftRadius: 25,
+      borderBottomRightRadius: 25,
+      marginBottom: 20,
+    }),
   },
   subject: {
     ...subjectStyle,

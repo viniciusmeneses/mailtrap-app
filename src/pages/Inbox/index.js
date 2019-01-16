@@ -41,7 +41,11 @@ export default class Inbox extends Component {
 
   extractKeyFromMessage = item => String(item.id);
 
-  renderMessage = ({ item }) => <MessageDetails {...item} />;
+  renderMessage = ({ item, index }) => {
+    const { messages } = this.state;
+    const isLastMessage = index === messages.length - 1;
+    return <MessageDetails {...item} roundBorderBottom={isLastMessage} />;
+  };
 
   refreshMessages = (currentInbox = this.state.currentInbox) => {
     const { user } = this.state;
