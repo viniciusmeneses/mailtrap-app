@@ -11,12 +11,19 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import client from '../../services/client';
+import PropTypes from 'prop-types';
 
 export default class Auth extends Component {
   state = {
     tokenInput: '31fa4b731a43bcccabed51ed1e23fdc4',
     error: '',
     loading: false,
+  };
+
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
   };
 
   handleLoginButton = () => {

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { withNavigation } from 'react-navigation';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
+import PropTypes from 'prop-types';
 
 const detailsIcon = name => <Icon name={name} color="#4cb3b2" size={15} />;
 
@@ -67,6 +68,23 @@ class MessageDetails extends Component {
     );
   }
 }
+
+MessageDetails.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+  subject: PropTypes.string.isRequired,
+  sent_at: PropTypes.string.isRequired,
+  to_email: PropTypes.string.isRequired,
+  from_email: PropTypes.string.isRequired,
+  fullSubject: PropTypes.bool,
+  roundBorderBottom: PropTypes.bool,
+};
+
+MessageDetails.defaultProps = {
+  fullSubject: false,
+  roundBorderBottom: false,
+};
 
 const subjectStyle = {
   fontWeight: 'bold',

@@ -1,29 +1,33 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import Header from '../../components/Header';
 import MessageDetails from '../../components/MessageDetails';
 import MessageContent from '../../components/MessageContent';
+import PropTypes from 'prop-types';
 
-export default class Message extends Component {
-  render() {
-    const { navigation } = this.props;
-    const message = {
-      subject: navigation.getParam('subject'),
-      sent_at: navigation.getParam('sent_at'),
-      to_email: navigation.getParam('to_email'),
-      from_email: navigation.getParam('from_email'),
-      content: navigation.getParam('content'),
-    };
+const Message = ({ navigation }) => {
+  const message = {
+    subject: navigation.getParam('subject', 'Subject'),
+    sent_at: navigation.getParam('sent_at', new Date()),
+    to_email: navigation.getParam('to_email', 'to@email.com'),
+    from_email: navigation.getParam('from_email', 'from@email.com'),
+    content: navigation.getParam('content', 'Message content'),
+  };
 
-    return (
-      <View style={styles.wrapper}>
-        <Header mode="message" />
-        <MessageDetails {...message} fullSubject />
-        <MessageContent content={message.content} />
-      </View>
-    );
-  }
-}
+  return (
+    <View style={styles.wrapper}>
+      <Header mode="message" />
+      <MessageDetails {...message} fullSubject />
+      <MessageContent content={message.content} />
+    </View>
+  );
+};
+
+Message.propTypes = {
+  navigation: PropTypes.shape({
+    getParam: PropTypes.func,
+  }).isRequired,
+};
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -31,3 +35,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fafafa',
   },
 });
+
+export default Message;

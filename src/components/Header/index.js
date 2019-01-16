@@ -16,6 +16,7 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
+import PropTypes from 'prop-types';
 
 class Header extends Component {
   signOut = () => {
@@ -95,6 +96,27 @@ class Header extends Component {
     );
   }
 }
+
+Header.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+  onInboxChange: PropTypes.func,
+  mode: PropTypes.string.isRequired,
+  inboxes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      name: PropTypes.string,
+    })
+  ),
+  selected: PropTypes.string,
+};
+
+Header.defaultProps = {
+  onInboxChange: () => {},
+  inboxes: [],
+  selected: '',
+};
 
 const inboxStyle = {
   fontSize: 15,

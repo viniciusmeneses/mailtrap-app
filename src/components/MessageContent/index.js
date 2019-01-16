@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, Text, StyleSheet, View } from 'react-native';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 import HTML from 'react-native-render-html';
+import PropTypes from 'prop-types';
 
 const MessageContent = ({ content }) => (
   <ScrollView style={styles.container} onPress={() => {}}>
@@ -14,6 +15,10 @@ const MessageContent = ({ content }) => (
     </View>
   </ScrollView>
 );
+
+MessageContent.propTypes = {
+  content: PropTypes.string.isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {

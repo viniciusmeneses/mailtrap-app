@@ -19,7 +19,7 @@ const request = (URL, token, parser = 'json') =>
 const MailTrapClient = {
   getUser: token =>
     request('/user', token).then(user => ({
-      id: user.id,
+      id: String(user.id),
       api_token: user.api_token,
       name: user.name,
       email: user.email,
@@ -27,7 +27,7 @@ const MailTrapClient = {
   getInboxes: token =>
     request('/inboxes', token).then(inboxes =>
       inboxes.map(inbox => ({
-        id: inbox.id,
+        id: String(inbox.id),
         name: inbox.name,
       }))
     ),
@@ -35,7 +35,7 @@ const MailTrapClient = {
     request(`/inboxes/${inbox}/messages`, token)
       .then(messages =>
         messages.map(message => ({
-          id: message.id,
+          id: String(message.id),
           subject: message.subject,
           sent_at: moment(message.sent_at).fromNow(),
           from_email: message.from_email,
