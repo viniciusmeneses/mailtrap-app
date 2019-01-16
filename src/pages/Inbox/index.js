@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, FlatList, AsyncStorage } from 'react-native';
 import Header from '../../components/Header';
-import Message from '../../components/Message';
+import MessageInbox from '../../components/MessageInbox';
 import client from '../../services/client';
 
 export default class Inbox extends Component {
@@ -41,7 +41,7 @@ export default class Inbox extends Component {
 
   extractKeyFromMessage = item => String(item.id);
 
-  renderMessage = ({ item }) => <Message {...item} />;
+  renderMessage = ({ item }) => <MessageInbox {...item} />;
 
   refreshMessages = (currentInbox = this.state.currentInbox) => {
     const { user } = this.state;
