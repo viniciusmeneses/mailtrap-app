@@ -48,29 +48,49 @@ class Header extends Component {
 
   goToMailTrap = () => Linking.openURL('https://mailtrap.io');
 
+  createIcon = name => <Icon name={name} color="#4cb3b2" size={25} />;
+
+  closeMessage = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Inbox');
+  };
+
   render() {
+    const { mode } = this.props;
     return (
       <View style={styles.header}>
-        <Menu onSelect={this.handleInboxSelect}>
-          <MenuTrigger
-            customStyles={{ TriggerTouchableComponent: TouchableOpacity }}
-          >
-            <Icon name="inbox" size={25} color="#4cb3b2" />
-          </MenuTrigger>
-          <MenuOptions
-            customStyles={{
-              optionsContainer: styles.menuOptionContainer,
-            }}
-          >
-            {this.renderInboxes()}
-          </MenuOptions>
-        </Menu>
+        {mode === 'inbox' ? (
+          <Menu onSelect={this.handleInboxSelect}>
+            <MenuTrigger
+              customStyles={{ TriggerTouchableComponent: TouchableOpacity }}
+            >
+              {this.createIcon('inbox')}
+            </MenuTrigger>
+            <MenuOptions
+              customStyles={{
+                optionsContainer: styles.menuOptionContainer,
+              }}
+            >
+              {this.renderInboxes()}
+            </MenuOptions>
+          </Menu>
+        ) : (
+          <TouchableOpacity onPress={this.closeMessage}>
+            {this.createIcon('chevron-left')}
+          </TouchableOpacity>
+        )}
+
         <TouchableOpacity onPress={this.goToMailTrap}>
           <Text style={styles.title}>MailTrap</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.signOut}>
-          <Icon name="times-circle" size={25} color="#4cb3b2" />
-        </TouchableOpacity>
+
+        {mode === 'inbox' ? (
+          <TouchableOpacity onPress={this.signOut}>
+            {this.createIcon('times-circle')}
+          </TouchableOpacity>
+        ) : (
+          <View />
+        )}
       </View>
     );
   }

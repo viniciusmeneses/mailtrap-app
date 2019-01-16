@@ -1,42 +1,65 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { withNavigation } from 'react-navigation';
 
 const detailsIcon = name => <Icon name={name} color="#4cb3b2" size={15} />;
 
-const MessageInbox = ({ subject, sent_at, to_email, from_email }) => (
-  <TouchableOpacity style={styles.container}>
-    <View style={styles.subjectWrapper}>
-      <Text style={styles.subject} numberOfLines={1}>
-        {subject}
-      </Text>
-    </View>
-    <View>
-      <View style={styles.detailsWrapper}>
-        {detailsIcon('paper-plane')}
-        <Text style={styles.detailsText}>{from_email}</Text>
-      </View>
-      <View style={styles.detailsWrapper}>
-        {detailsIcon('envelope')}
-        <Text style={styles.detailsText}>{to_email}</Text>
-      </View>
-      <View style={styles.detailsWrapper}>
-        {detailsIcon('calendar')}
-        <Text style={styles.detailsText}>{moment(sent_at).fromNow()}</Text>
-      </View>
-    </View>
-  </TouchableOpacity>
-);
+class MessageInbox extends Component {
+  openMessage = () => {
+    const {
+      navigation,
+      subject,
+      sent_at,
+      to_email,
+      from_email,
+      content,
+    } = this.props;
+    navigation.navigate('Message', {
+      subject,
+      sent_at,
+      to_email,
+      from_email,
+      content,
+    });
+  };
+
+  render() {
+    const { subject, sent_at, to_email, from_email } = this.props;
+    return (
+      <TouchableOpacity style={styles.container} onPress={this.openMessage}>
+        <View style={styles.subjectWrapper}>
+          <Text style={styles.subject} numberOfLines={1}>
+            {subject}
+          </Text>
+        </View>
+        <View>
+          <View style={styles.detailsWrapper}>
+            {detailsIcon('paper-plane')}
+            <Text style={styles.detailsText}>{from_email}</Text>
+          </View>
+          <View style={styles.detailsWrapper}>
+            {detailsIcon('envelope')}
+            <Text style={styles.detailsText}>{to_email}</Text>
+          </View>
+          <View style={styles.detailsWrapper}>
+            {detailsIcon('calendar')}
+            <Text style={styles.detailsText}>{sent_at}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     borderRadius: 5,
     borderColor: '#dfdfdf',
     borderWidth: 1,
     margin: 10,
     padding: 15,
+    backgroundColor: 'white',
   },
   subject: {
     fontSize: 18,
@@ -61,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MessageInbox;
+export default withNavigation(MessageInbox);

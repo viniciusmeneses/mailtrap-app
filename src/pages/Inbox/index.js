@@ -62,6 +62,7 @@ export default class Inbox extends Component {
           inboxes={inboxes}
           selected={currentInbox}
           onInboxChange={this.handleInboxChange}
+          mode="inbox"
         />
         <View style={styles.container}>
           <FlatList
