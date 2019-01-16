@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   AsyncStorage,
   Linking,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import client from '../../services/client';
@@ -15,6 +16,7 @@ export default class Auth extends Component {
   state = {
     tokenInput: '31fa4b731a43bcccabed51ed1e23fdc4',
     error: '',
+    loading: false,
   };
 
   handleLoginButton = () => {
@@ -22,13 +24,14 @@ export default class Auth extends Component {
     const { navigation } = this.props;
 
     if (tokenInput) {
+      this.setState({ loading: true });
       client
         .getUser(tokenInput)
         .then(response =>
           AsyncStorage.setItem('@MailTrap:user', JSON.stringify(response))
         )
         .then(() => navigation.navigate('Inbox'))
-        .catch(error => this.setState({ error }));
+        .catch(error => this.setState({ error, loading: false }));
     }
   };
 
@@ -37,7 +40,7 @@ export default class Auth extends Component {
   goToMailTrap = () => Linking.openURL('https://mailtrap.io');
 
   render() {
-    const { tokenInput, error } = this.state;
+    const { tokenInput, error, loading } = this.state;
 
     return (
       <View style={styles.container}>
@@ -59,8 +62,13 @@ export default class Auth extends Component {
           <TouchableOpacity
             style={styles.loginButton}
             onPress={this.handleLoginButton}
+            disabled={loading}
           >
-            <Icon name="send" color="#fff" size={17} />
+            {loading ? (
+              <ActivityIndicator color="#ffffff" style={styles.loading} />
+            ) : (
+              <Icon name="send" color="#fff" size={17} />
+            )}
           </TouchableOpacity>
         </View>
         <Text style={styles.error}>{error}</Text>
@@ -110,5 +118,9 @@ const styles = StyleSheet.create({
   error: {
     margin: 5,
     color: '#DD544D',
+  },
+  loading: {
+    width: 17,
+    height: 17,
   },
 });
